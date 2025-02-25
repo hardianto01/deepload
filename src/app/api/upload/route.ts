@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
 import path from "path";
-import { fit } from "sharp";
 
 // Konfigurasi max file size (100MB)
 const MAX_FILE_SIZE = 100 * 1024 * 1024;
