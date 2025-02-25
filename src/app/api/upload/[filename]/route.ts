@@ -1,21 +1,19 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { readFile } from "fs/promises";
 import path from "path";
 
 export async function GET(
-  request: Request,
-  { params }: { params: { filename: string } },
+  _request: NextRequest,
+  { params }: { params: Promise<{ filename: string }> },
 ) {
   try {
-    const filename = params.filename;
-    const filePath = path.join("/tmp", "uploads", filename);
-    console.log(filePath);
-    // Baca file
+    const { filename } = await params;
+    const filePath = path.join("/tmp/uploads", filename);
+
     const fileBuffer = await readFile(filePath);
 
-    // Tentukan Content-Type berdasarkan ekstensi file
     const fileExtension = path.extname(filename).toLowerCase();
-    let contentType = "application/octet-stream"; // default content type
+    let contentType = "application/octet-stream";
 
     const contentTypes: { [key: string]: string } = {
       ".jpg": "image/jpeg",
@@ -33,7 +31,6 @@ export async function GET(
       contentType = contentTypes[fileExtension];
     }
 
-    // Return file dengan header yang sesuai
     return new NextResponse(fileBuffer, {
       headers: {
         "Content-Type": contentType,
