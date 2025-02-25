@@ -391,15 +391,3 @@ function formatFileSize(bytes: number): string {
 
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
 }
-export async function GET() {
-  return Response.json({
-    name: "DeepLoad API",
-    version: "1.0.0",
-    status: "active",
-    supportedFormats: {
-      images: [".jpeg", ".jpg", ".png"],
-      documents: [".pdf"],
-      videos: [".mp4", ".mov"],
-    },
-  });
-}
