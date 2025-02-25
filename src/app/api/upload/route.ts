@@ -18,6 +18,8 @@ interface FileWithArrayBuffer extends File {
 // Konfigurasi max file size (100MB)
 const MAX_FILE_SIZE = 100 * 1024 * 1024;
 
+// Base URL for file access
+
 // Allowed file types
 const ALLOWED_FILE_TYPES = {
   // Images
@@ -67,7 +69,7 @@ export async function POST(request: Request) {
     }
 
     // Create uploads directory if it doesn't exist
-    const uploadDir = path.join(process.cwd(), "public/uploads");
+    const uploadDir = path.join("/tmp/uploads");
     await mkdir(uploadDir, { recursive: true });
 
     // Process all files
@@ -86,7 +88,7 @@ export async function POST(request: Request) {
         return {
           originalName: fileObj.name,
           fileName: uniqueFileName,
-          fileUrl: `/uploads/${uniqueFileName}`,
+          fileUrl: `/api/upload/${uniqueFileName}`,
           fileType: fileObj.type,
           fileSize: fileObj.size,
         };
