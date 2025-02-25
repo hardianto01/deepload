@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DeepLoad - File Upload Documentation
 
-## Getting Started
+## Overview
+DeepLoad is a modern file upload platform that allows users to securely upload and process various file types including images, PDFs, and videos.
 
-First, run the development server:
+## Demo Screenshot
+![DeepLoad Demo](public/deepload.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Features
+- Drag & drop file upload
+- Multiple file support
+- File type validation
+- Size limit checks
+- Progress tracking
+- Secure file processing
+- Beautiful UI/UX
+
+## Supported File Types
+- Images: .jpg, .jpeg, .png, .gif, .webp
+- Documents: .pdf
+- Videos: .mp4, .mov
+- Archives: .zip
+
+## Usage
+1. Drag files into the upload zone or click to browse
+2. Selected files appear in the upload queue
+3. Click "Process" button to start upload
+4. Files are validated and processed securely
+5. Success/error notification appears
+
+## Technical Details
+- Built with Next.js 13+
+- Uses react-dropzone for drag & drop
+- Server-side file validation
+- Unique file naming with UUID
+- Configurable max file size (100MB default)
+- Public uploads directory storage
+
+## API Endpoints
+
+### POST /api/upload
+Upload one or multiple files
+
+Request:
+```multipart/form-data
+files: File[]
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Response:
+```json
+{
+  "message": "Files uploaded successfully",
+  "files": [
+    {
+      "originalName": "example.jpg",
+      "fileName": "uuid.jpg",
+      "fileUrl": "/uploads/uuid.jpg",
+      "fileType": "image/jpeg",
+      "fileSize": 1024
+    }
+  ]
+}
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Security
+- File type validation
+- Size limits
+- Unique file names
+- Proper error handling
+- Secure file storage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Future Improvements
+- Cloud storage integration
+- Image optimization
+- File compression
+- Progress bars
+- Preview thumbnails
 
-## Learn More
+## Example Implementation
+See the full source code in the repository for detailed implementation examples.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+MIT License - free to use and modify
