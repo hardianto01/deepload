@@ -2,9 +2,17 @@
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
+interface UploadedFile {
+  originalName: string;
+  fileName: string;
+  fileUrl: string;
+  fileType: string;
+  fileSize: number;
+}
+
 export default function Home() {
   const [files, setFiles] = useState<File[]>([]);
-  const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [showPopup, setShowPopup] = useState(false);
 
   const processFiles = async () => {

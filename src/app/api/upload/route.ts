@@ -3,6 +3,18 @@ import { writeFile, mkdir } from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
 import path from "path";
 
+interface UploadedFile {
+  originalName: string;
+  fileName: string;
+  fileUrl: string;
+  fileType: string;
+  fileSize: number;
+}
+
+interface FileWithArrayBuffer extends File {
+  arrayBuffer(): Promise<ArrayBuffer>;
+}
+
 // Konfigurasi max file size (100MB)
 const MAX_FILE_SIZE = 100 * 1024 * 1024;
 
@@ -59,23 +71,24 @@ export async function POST(request: Request) {
     await mkdir(uploadDir, { recursive: true });
 
     // Process all files
-    const uploadResults = await Promise.all(
-      files.map(async (file: any) => {
+    const uploadResults: UploadedFile[] = await Promise.all(
+      files.map(async (file) => {
+        const fileObj = file as FileWithArrayBuffer;
         const fileExt =
-          ALLOWED_FILE_TYPES[file.type as keyof typeof ALLOWED_FILE_TYPES];
+          ALLOWED_FILE_TYPES[fileObj.type as keyof typeof ALLOWED_FILE_TYPES];
         const uniqueFileName = `${uuidv4()}${fileExt}`;
         const filePath = path.join(uploadDir, uniqueFileName);
 
         // Save file
-        const data = await file.arrayBuffer();
+        const data = await fileObj.arrayBuffer();
         await writeFile(filePath, Buffer.from(data));
 
         return {
-          originalName: file.name,
+          originalName: fileObj.name,
           fileName: uniqueFileName,
           fileUrl: `/uploads/${uniqueFileName}`,
-          fileType: file.type,
-          fileSize: file.size,
+          fileType: fileObj.type,
+          fileSize: fileObj.size,
         };
       }),
     );
